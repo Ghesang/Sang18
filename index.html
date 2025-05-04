@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lyrics Animation</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            color: white;
+            position: relative;
+        }
+        #background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('space2.gif') center center / cover no-repeat;
+            z-index: -1;
+        }
+        #lyrics {
+            font-size: 30px;
+            text-align: center;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <div id="background"></div>
+    <div id="lyrics"></div>
+
+    <script>
+        const lyrics = [
+            "Karena kamu cantik",
+            "Kan kuberi segalanya apa yang kupunya",
+            "Dan hatimu baik",
+            "Sempurnalah duniaku saat kau di sisiku",
+            "Bukan karna make up di wajahmu",
+            "Atau lipstik merah itu",
+            "Lembut hati tutur kata",
+            "Terciptalah cinta yang kupuja"
+        ];
+
+        const delays = [400, 300, 900, 10, 400, 800, 400, 5000];
+        const speeds = [90, 90, 115, 120, 90, 105, 100, 95];
+
+        let currentIndex = 0;
+        let currentCharIndex = 0;
+        let currentLine = '';
+        let isLineCompleted = false;
+
+        const lyricsDiv = document.getElementById('lyrics');
+
+        function animateCharacter() {
+            if (currentIndex < lyrics.length) {
+                if (currentCharIndex < lyrics[currentIndex].length) {
+                    currentLine += lyrics[currentIndex].charAt(currentCharIndex);
+                    lyricsDiv.textContent = currentLine;
+                    currentCharIndex++;
+                    setTimeout(animateCharacter, speeds[currentIndex]);
+                } else if (!isLineCompleted) {
+                    isLineCompleted = true;
+                    setTimeout(nextLine, delays[currentIndex]);
+                }
+            }
+        }
+
+        function nextLine() {
+            if (currentIndex < lyrics.length - 1) {
+                currentIndex++;
+                currentCharIndex = 0;
+                currentLine = '';
+                isLineCompleted = false;
+                lyricsDiv.textContent = '';
+                animateCharacter();
+            }
+        }
+
+        animateCharacter();
+    </script>
+</body>
+</html>
